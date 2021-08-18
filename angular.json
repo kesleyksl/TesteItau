@@ -77,10 +77,12 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "TesteItau:build:production"
+              "browserTarget": "TesteItau:build:production",
+              "aot": true
             },
             "development": {
-              "browserTarget": "TesteItau:build:development"
+              "browserTarget": "TesteItau:build:development",
+              "aot": true
             }
           },
           "defaultConfiguration": "development"
