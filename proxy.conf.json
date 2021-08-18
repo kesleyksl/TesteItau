@@ -1,5 +1,5 @@
 {
-    "/task-api": {
+    "/task-api/*": {
         "target": "https://61088c1dd73c6400170d3981.mockapi.io/api/v1/tasks",
         "secure": false,
         "changeOrigin": true,
