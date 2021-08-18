@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SharedModule } from 'src/app/modules/shared/shared.module';
 
 import { ToDoPageComponent } from './to-do-page.component';
 
@@ -8,18 +9,16 @@ describe('ToDoPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [SharedModule],
       declarations: [ ToDoPageComponent ]
     })
     .compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(ToDoPageComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
+
+  it('should create component', () => {
     expect(component).toBeTruthy();
   });
 });

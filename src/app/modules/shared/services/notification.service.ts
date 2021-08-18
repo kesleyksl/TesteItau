@@ -9,17 +9,13 @@ export class NotificationService {
 
   constructor(private readonly snackbar: MatSnackBar) { }
 
-  async confirm(message: string){
-    if(!message || message.trim() === '')
+  showSnackbar(config: SnackbarConfig){
+    if(!config || ! config?.message || config?.message.trim() === '')
       throw new Error('Empty message');
 
-    return await window.confirm(message);
-  }
-
-  showSnackbar(config: SnackbarConfig){
-    if(!config || ! config?.message)
-      return
-
-    this.snackbar.open(config.message, config?.action, config?.config)
-  }
+    this.snackbar.open(config.message, 
+                       config?.action || 'X', 
+                       {duration: config.config?.duration || 3000, ...config});
+    return true;
+  } 
 }

@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from 'src/app/modules/shared/shared.module';
+import { TaskService } from '../../services/task.service';
+import { ToDoModule } from '../../to-do.module';
 import { AddTaskComponent } from './add-task.component';
+
 
 describe('AddTaskComponent', () => {
   let component: AddTaskComponent;
@@ -8,18 +11,19 @@ describe('AddTaskComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddTaskComponent ]
+      imports: [SharedModule, ToDoModule],
+      declarations: [ AddTaskComponent ],
+      providers: [TaskService]
+       
     })
     .compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(AddTaskComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+
 });

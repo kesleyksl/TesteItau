@@ -35,14 +35,9 @@ export class TaskListItemComponent implements OnInit {
 
   async deleteTask(){
     try{
-      const confirm = await this.notificationService.confirm(`Deseja remover a tarefa "${this.task.item}"?`);
-      
-      if(confirm){
         this.deletingOrUpdating = true;
         await this.taskService.delete(this.task.id);
-        this.showMessage('Tarefa removida com sucesso');
-      }
-      return
+        this.showMessage('Tarefa removida com sucesso');      
     }
     catch(error){
       console.error(error);

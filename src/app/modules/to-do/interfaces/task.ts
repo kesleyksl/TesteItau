@@ -1,10 +1,10 @@
 export class Task{
     item: string;
-    done: boolean;
+    done?: boolean;
     id?: string
 
-    constructor(item: string, done: boolean, id?: string){
-        this.done = done,
+    constructor(item: string, done?: boolean, id?: string){
+        this.done = done || false,
         this.item = item,
         this.id = id
     }

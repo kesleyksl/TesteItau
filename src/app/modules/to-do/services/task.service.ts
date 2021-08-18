@@ -30,8 +30,8 @@ export class TaskService {
     return this.taskList$.asObservable();
   }
 
-  getById(id: string): Promise<Task> {
-    if (!id || id === '') {
+  getById(id?: string): Promise<Task> {
+    if (!id || id?.trim() === '') {
       throw new Error('Invalid Id');
     }
     return this.http.get<Task>(`${this.taskApi}/${id}`).toPromise();
