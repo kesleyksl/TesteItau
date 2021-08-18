@@ -1,0 +1,21 @@
+<form autocomplete="off"
+      [formGroup]="taskForm"
+      (ngSubmit)="submitAndReset()"
+      class="form"
+      #form='ngForm'>
+    <mat-form-field appearance="outline"
+                    class="form__field--task-name">
+        <mat-label>Tarefa</mat-label>
+        <input matInput 
+               preventEspecialCharacters 
+               formControlName="item"/>
+    </mat-form-field>
+
+    <button mat-raised-button
+            class="form__button--submit"
+            color="primary"
+            type="submit" 
+            [disabled]="invalidForm()">
+        Adicionar
+    </button>
+</form>

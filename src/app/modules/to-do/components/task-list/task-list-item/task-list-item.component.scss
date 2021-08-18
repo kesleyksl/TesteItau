@@ -1,0 +1,11 @@
+.list-item{
+    &__checkbox{
+        margin-right: 20px;
+    }
+}
+
+.list-item ::ng-deep .mat-list-item-content{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}

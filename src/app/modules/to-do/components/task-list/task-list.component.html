@@ -1,0 +1,17 @@
+<mat-card class="task-card" >
+    <mat-card-title>
+        <h3 mat-subheader>Tarefas</h3>
+    </mat-card-title>
+    <mat-card-content>
+
+        <mat-list class="task-card__list list" *ngIf="!loadingData; else loading">
+            <task-list-item *ngFor="let task of tasks$ | async" [task]="task"
+                            class="task-card__list--item">
+                
+            </task-list-item>
+        </mat-list>
+        <ng-template #loading>
+            <mat-spinner [diameter]="50"></mat-spinner>
+        </ng-template>
+    </mat-card-content>
+</mat-card>

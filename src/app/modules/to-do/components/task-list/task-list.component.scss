@@ -1,0 +1,10 @@
+.task-card{
+    width: fit-content;
+    max-width: 80%;
+    &__list{
+        width: fit-content;
+        &--item{
+            width: 100%;
+        }
+    }
+}
