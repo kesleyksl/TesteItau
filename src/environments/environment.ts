@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  taskApi: '/task-api'
+  taskApi: 'task-api'
 };
 
 /*
