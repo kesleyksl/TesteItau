@@ -78,11 +78,11 @@
           "configurations": {
             "production": {
               "browserTarget": "TesteItau:build:production",
-              "proxyConfig": "./proxy.conf.prod.json"
+              "proxyConfig": "src/proxy.conf.prod.json"
             },
             "development": {
               "browserTarget": "TesteItau:build:development",
-              "proxyConfig": "./proxy.conf.json"
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
