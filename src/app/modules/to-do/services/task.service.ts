@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Task } from '../interfaces/task';
 import { TaskResponse } from '../interfaces/task-item-response';
-
+import { map, take, tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,87 +15,81 @@ export class TaskService {
 
   constructor(private readonly http: HttpClient) { }
 
-  async getAll() {
+  getAll() {
     if (this.taskList$.value.length === 0) {
 
-      try {
-        const response = await this.http.get<TaskResponse>(this.taskApi).toPromise();
-        this.updateTaskList(response.items);
-      }
-      catch (error) {
-        this.updateTaskList([]);
-        throw error
-      }
+      this.http.get<TaskResponse>(this.taskApi)
+        .pipe(
+          take(1),
+          map((response) => {
+            this.updateTaskList(response.items);
+          })
+        ).subscribe()
+
     }
     return this.taskList$.asObservable();
   }
 
-  getById(id?: string): Promise<Task> {
+  getById(id?: string): Observable<Task> {
     if (!id || id?.trim() === '') {
       throw new Error('Invalid Id');
     }
-    return this.http.get<Task>(`${this.taskApi}/${id}`).toPromise();
+    return this.http.get<Task>(`${this.taskApi}/${id}`);
   }
 
-  async create(newItem: Task): Promise<Task> {
+  create(newItem: Task): Observable<Task> {
     if (!newItem.isValid()) {
       throw new Error('Invalid Item');
     }
-    else if(this.taskList$.value.length === 100){
+    else if (this.taskList$.value.length === 100) {
       throw new Error('Maximum items exceeded');
     }
-    try{
-      const response = await this.http.post<Task>(`${this.taskApi}`, newItem).toPromise();
-      const values = this.taskList$.value;
-      values.push(response);
-      this.updateTaskList(values);
-      return response;
-    }
-    catch(error){
-      throw error;
-    }
+    return this.http.post<Task>(`${this.taskApi}`, newItem)
+      .pipe(tap((response) => {
+        const values = this.taskList$.value;
+        values.push(response);
+        this.updateTaskList(values);
+        return response
+      }));
   }
 
-  async update(item: Task): Promise<Task> {
+  update(item: Task): Observable<Task> {
     if (!item.isValid(true)) {
       throw new Error('Invalid Item');
     }
-    try{
-      const response = await this.http.put<Task>(`${this.taskApi}/${item.id}`, item).toPromise();
-      const values = this.taskList$.value;
-      const index = values.findIndex(task => task.id === item.id);
-      if(index >= 0){
-        values[index] = response;
-      }
-      this.updateTaskList(values);
-      return response;
-    }
-    catch(error){
-      throw error;
-    }
+    return this.http.put<Task>(`${this.taskApi}/${item.id}`, item)
+      .pipe(
+        map((response) => {
+          const values = this.taskList$.value;
+          const index = values.findIndex(task => task.id === item.id);
+          if (index >= 0) {
+            values[index] = response;
+          }
+          this.updateTaskList(values);
+          return response;
+        })
+      )
   }
 
-  async delete(id?: string): Promise<Task> {
+  delete(id?: string): Observable<Task> {
     if (!id || id?.trim() === '') {
       throw new Error('Invalid Id');
     }
-    try{
-      const response = await this.http.delete<Task>(`${this.taskApi}/${id}`).toPromise();
-      const values = this.taskList$.value;
-      const index = values.findIndex(task => task.id === id);
-      if(index >= 0){
-        values.splice(index, 1);
-      }
-      this.updateTaskList(values);
-      return response;
-    }
-    catch(error){
-      throw error;
-    }    
+    return this.http.delete<Task>(`${this.taskApi}/${id}`)
+      .pipe(
+        map((response) => {
+          const values = this.taskList$.value;
+          const index = values.findIndex(task => task.id === id);
+          if (index >= 0) {
+            values.splice(index, 1);
+          }
+          this.updateTaskList(values);
+          return response;
+        })
+      )
   }
 
-  private updateTaskList(values: Task[]){
+  private updateTaskList(values: Task[]) {
     this.taskList$.next(values);
-
   }
 }

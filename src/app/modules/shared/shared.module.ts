@@ -1,10 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from './material.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PreventEspecialCharactersDirective } from './directives/prevent-especial-characters.directive';
-import { NotificationService } from './services/notification.service';
+import { MaterialModule } from './material.module';
 
 
 
@@ -22,9 +21,6 @@ import { NotificationService } from './services/notification.service';
     ReactiveFormsModule,
     FormsModule,
     PreventEspecialCharactersDirective
-  ],
-  providers:[
-    NotificationService
   ]
 })
 export class SharedModule { }

@@ -2,11 +2,13 @@
       [formGroup]="taskForm"
       (ngSubmit)="submitAndReset()"
       class="form"
+      *ngIf="taskForm"
       #form='ngForm'>
     <mat-form-field appearance="outline"
                     class="form__field--task-name">
         <mat-label>Tarefa</mat-label>
         <input matInput 
+                (appAction)="teste($event)"
                preventEspecialCharacters 
                formControlName="item"/>
     </mat-form-field>

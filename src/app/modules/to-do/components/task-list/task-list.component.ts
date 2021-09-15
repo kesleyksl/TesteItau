@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { NotificationService } from 'src/app/modules/shared/services/notification.service';
 import { Task } from '../../interfaces/task';
 import { TaskService } from '../../services/task.service';
 
@@ -12,35 +11,16 @@ import { TaskService } from '../../services/task.service';
 export class TaskListComponent implements OnInit {
   tasks$: Observable<Task[]> = new Observable<Task[]>();
   loadingData: boolean = false
-  constructor(private readonly taskService: TaskService,
-              private readonly notificationService: NotificationService) { }
+  constructor(private readonly taskService: TaskService) { }
 
   ngOnInit() {
     this.getTasks();
   }
 
-  async getTasks(){
-    try{
+  private async getTasks(){
       this.loadingData = true;
-      this.tasks$ = await this.taskService.getAll();
-    }
-    catch(error){
-      console.error(error);
-      this.showMessage(error?.message)
-    }
-    finally{
+      this.tasks$ = this.taskService.getAll();
       this.loadingData = false;
-    }
   }
 
-  showMessage(message: string){
-    this.notificationService.showSnackbar({
-      message: message,
-      config: {
-        horizontalPosition: 'center',
-        duration: 3000,
-        verticalPosition: 'bottom'
-      }
-    })
-  }
 } 

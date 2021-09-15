@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, NgForm, Validators } from '@angular/forms';
-import { NotificationService } from 'src/app/modules/shared/services/notification.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { take } from 'rxjs/operators';
 import { Task } from '../../interfaces/task';
 import { TaskService } from '../../services/task.service';
 
@@ -10,61 +10,52 @@ import { TaskService } from '../../services/task.service';
   styleUrls: ['./add-task.component.scss']
 })
 export class AddTaskComponent implements OnInit {
-  taskForm = this.generateNewTaskForm();
+  taskForm: FormGroup;
   creating: boolean = false;
-  @ViewChild('form') form: NgForm;
+  @ViewChild('form') private form: NgForm;
+
   constructor(private readonly _formBuilder: FormBuilder,
-              private readonly taskService: TaskService,
-              private readonly notificationService: NotificationService) { }
+    private readonly taskService: TaskService) { }
 
   ngOnInit(): void {
+    this.taskForm = this.generateNewTaskForm();
   }
 
-  generateNewTaskForm(){
-    return  this._formBuilder.group({
+  private generateNewTaskForm() {
+    return this._formBuilder.group({
       item: ['', [Validators.required]],
       done: [false]
-    })
+    });
+
   }
 
-  invalidForm(){
-    return !this.taskForm.valid ||( this.taskForm?.value.item.trim() === '') || this.creating;
+  invalidForm() {
+    return this.taskForm.invalid || (this.taskForm?.value.item.trim() === '') || this.creating;
   }
 
-  async submitAndReset(){
-    if(!this.taskForm.valid)
+  submitAndReset() {
+    if (this.taskForm.invalid)
       return
 
-    try{
-      this.creating = true;
-      this.taskForm.disable();
-      const newTask = new Task(this.taskForm.value.item, this.taskForm.value.done);
-      await this.taskService.create(newTask);
-      this.showMessage('Tarefa adicionada');
-      this.resetForm();
-    }
-    catch(error){
-      console.error(error);
-      this.showMessage(error?.message)
-    }
-    finally{
+
+    this.creating = true;
+    this.taskForm.disable();
+    const newTask = new Task(this.taskForm.value.item, this.taskForm.value.done);
+    this.taskService.create(newTask).pipe(take(1)).subscribe(() => {
       this.taskForm.controls.item.enable();
       this.creating = false;
-    }
+      this.resetForm();
+
+    });
+
   }
 
-  resetForm(){
+  teste(e:any){
+    console.log(e)
+  }
+  private resetForm() {
     this.form.resetForm();
   }
 
-  showMessage(message: string){
-    this.notificationService.showSnackbar({
-      message: message,
-      config: {
-        horizontalPosition: 'center',
-        duration: 3000,
-        verticalPosition: 'bottom'
-      }
-    })
-  }
+
 }
