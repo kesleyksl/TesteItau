@@ -16,9 +16,7 @@ export class TaskMockService {
 
 
   getAll(): Observable<Task[]> {
-    this.taskList$.next([
-        new Task('1')
-    ])
+
     return this.taskList$.asObservable();
   }
 
