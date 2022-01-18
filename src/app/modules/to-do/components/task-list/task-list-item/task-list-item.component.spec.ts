@@ -1,12 +1,11 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs';
-import { delay } from 'rxjs/operators';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { Task } from '../../../interfaces/task';
 import { TaskService } from '../../../services/task.service';
 import { TaskListComponent } from '../task-list.component';
-
 import { TaskListItemComponent } from './task-list-item.component';
+
 
 function mockUpdateResponseTrue() {
     return new BehaviorSubject<Task>(new Task('', true, '')).asObservable();
@@ -68,4 +67,4 @@ describe(TaskListComponent.name, () => {
         component.deleteTask();
         expect(service.delete).toHaveBeenCalled();
     });
-});
+ });

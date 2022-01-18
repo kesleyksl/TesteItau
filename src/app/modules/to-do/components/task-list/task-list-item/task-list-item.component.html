@@ -1,9 +1,7 @@
 <mat-list-item class="list-item" *ngIf="task">
-    <mat-checkbox class="list-item__checkbox"
-                  [(ngModel)]="task.done"
-                  
-                  (ngModelChange)="updateTaskStatus($event)">
-                  
+    <mat-checkbox #check class="list-item__checkbox"
+                  [(ngModel)]="task.done"                  
+                  (ngModelChange)="updateTaskStatus($event)">                  
                   {{task.item}}
     </mat-checkbox>
 

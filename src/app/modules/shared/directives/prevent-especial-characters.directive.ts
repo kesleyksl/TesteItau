@@ -11,7 +11,6 @@ export class PreventEspecialCharactersDirective {
 
   @HostListener('input', ["$event.target.value"])
   onInput(value: string){
-      console.log('qualquer coisa ai')
       const regulaExpression  = /[`~!@#$%^&*()_|+\-=?;:'",.¨{}ºª´^~<>=+°§¬¢£³²¹\{\}\[\]\\\/]/gi;
       this.el.nativeElement.value = value.replace(regulaExpression, '');
       this.control.control?.setValue(this.el.nativeElement.value)

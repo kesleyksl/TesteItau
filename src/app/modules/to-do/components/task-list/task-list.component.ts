@@ -10,7 +10,6 @@ import { TaskService } from '../../services/task.service';
 })
 export class TaskListComponent implements OnInit {
   tasks$: Observable<Task[]> = new Observable<Task[]>();
-  loadingData: boolean = false
   constructor(private readonly taskService: TaskService) { }
 
   ngOnInit() {
@@ -18,9 +17,7 @@ export class TaskListComponent implements OnInit {
   }
 
   private async getTasks(){
-      this.loadingData = true;
       this.tasks$ = this.taskService.getAll();
-      this.loadingData = false;
   }
 
 } 

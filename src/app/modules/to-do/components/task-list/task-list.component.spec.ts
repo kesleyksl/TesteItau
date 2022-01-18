@@ -28,5 +28,5 @@ describe('TaskListComponent', () => {
       spyOn(service, 'getAll');
       fixture.detectChanges();
       expect(service.getAll).toHaveBeenCalled();
-  })
+  });
 });

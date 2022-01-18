@@ -26,7 +26,6 @@ export class AddTaskComponent implements OnInit {
       item: ['', [Validators.required]],
       done: [false]
     });
-
   }
 
   invalidForm() {
@@ -35,8 +34,7 @@ export class AddTaskComponent implements OnInit {
 
   submitAndReset() {
     if (this.taskForm.invalid)
-      return
-
+      throw Error('');
 
     this.creating = true;
     this.taskForm.disable();
@@ -45,17 +43,12 @@ export class AddTaskComponent implements OnInit {
       this.taskForm.controls.item.enable();
       this.creating = false;
       this.resetForm();
-
     });
 
   }
 
-  teste(e:any){
-    console.log(e)
-  }
   private resetForm() {
     this.form.resetForm();
   }
-
 
 }

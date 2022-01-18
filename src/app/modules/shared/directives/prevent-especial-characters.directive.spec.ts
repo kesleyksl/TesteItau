@@ -5,10 +5,10 @@ import { By } from '@angular/platform-browser';
 import { SharedModule } from '../shared.module';
 import { PreventEspecialCharactersDirective } from './prevent-especial-characters.directive';
 describe(PreventEspecialCharactersDirective.name, () => {
-  
+
   let fixture: ComponentFixture<PreventEspecialCharactersTestComponent>;
   let component: PreventEspecialCharactersTestComponent;
-  beforeEach(async()=>{
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SharedModule],
       declarations: [PreventEspecialCharactersDirective, PreventEspecialCharactersTestComponent]
@@ -18,24 +18,22 @@ describe(PreventEspecialCharactersDirective.name, () => {
   });
 
 
-  it(`(D) Should remove special character when input`, ()=>{
+  it(`(D) Should remove special character when input`, () => {
     fixture.detectChanges();
-      const value = 'some value+-()-+.*/'
-      let input = fixture.debugElement.query(By.css('input'));
-      let el: HTMLInputElement = input.nativeElement;
-      el.value = value;
-      el.dispatchEvent(new Event('input'));
-      expect(component.value.value).toBe('some value');
-  }); 
+    const value = 'some value+-()-+.*/'
+    let input = fixture.debugElement.query(By.css('input'));
+    let el: HTMLInputElement = input.nativeElement;
+    el.value = value;
+    el.dispatchEvent(new Event('input'));
+    expect(component.value.value).toBe('some value');
+  });
 
- 
+
 });
 
 @Component({
   template: `<input preventEspecialCharacters class="input"  [formControl]="value"/>`
 })
-class PreventEspecialCharactersTestComponent{
+class PreventEspecialCharactersTestComponent {
   public value = new FormControl('');
-  ngOnInit() {
-  }
 }

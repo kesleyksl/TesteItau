@@ -34,6 +34,7 @@ describe('AddTaskComponent', () => {
 
   it(`#${AddTaskComponent.name} should has form when created`, () => {
     fixture.detectChanges();
+    component.ngOnInit();
     expect(component.taskForm).toBeTruthy();
   });
 
@@ -49,10 +50,10 @@ describe('AddTaskComponent', () => {
   });
 
   it(`#${AddTaskComponent.prototype.submitAndReset.name} should not submit form when form is invalid`, () => {
-    spyOn(component, 'submitAndReset')
+    
     fixture.detectChanges();
-    const response = component.submitAndReset();
-    expect(response).toBeFalsy();
+
+    expect(()=> component.submitAndReset()).toThrow();
   });
 
   it(`#${AddTaskComponent.prototype.submitAndReset.name} should reset form when submit form`, fakeAsync(() => {

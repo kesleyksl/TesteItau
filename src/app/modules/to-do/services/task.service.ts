@@ -11,20 +11,22 @@ import { map, take, tap } from 'rxjs/operators';
 export class TaskService {
 
   private readonly taskApi = environment.taskApi;
-  private readonly taskList$ = new BehaviorSubject<Task[]>([]);
+  private taskList$ = new BehaviorSubject<Task[]>([]);
+  tasksLoaded: boolean = false;
+  constructor(public http: HttpClient) { }
 
-  constructor(private readonly http: HttpClient) { }
-
-  getAll() {
-    if (this.taskList$.value.length === 0) {
+  getAll(): Observable<Task[]> {
+    if (!this.tasksLoaded) {
 
       this.http.get<TaskResponse>(this.taskApi)
         .pipe(
           take(1),
           map((response) => {
+            this.tasksLoaded = true;
             this.updateTaskList(response.items);
           })
-        ).subscribe()
+        ).subscribe();
+        
 
     }
     return this.taskList$.asObservable();
@@ -32,20 +34,21 @@ export class TaskService {
 
   getById(id?: string): Observable<Task> {
     if (!id || id?.trim() === '') {
-      throw new Error('Invalid Id');
+      throw Error('Invalid Id');
     }
     return this.http.get<Task>(`${this.taskApi}/${id}`);
   }
 
   create(newItem: Task): Observable<Task> {
     if (!newItem.isValid()) {
-      throw new Error('Invalid Item');
+      throw Error('Invalid Item');
     }
-    else if (this.taskList$.value.length === 100) {
-      throw new Error('Maximum items exceeded');
+    if (this.taskList$.value.length >= 100) {
+      throw new TesteError('Maximum items exceeded');
     }
     return this.http.post<Task>(`${this.taskApi}`, newItem)
-      .pipe(tap((response) => {
+      .pipe(
+        tap((response) => {
         const values = this.taskList$.value;
         values.push(response);
         this.updateTaskList(values);
@@ -91,5 +94,12 @@ export class TaskService {
 
   private updateTaskList(values: Task[]) {
     this.taskList$.next(values);
+  }
+}
+
+
+export class TesteError extends Error{
+  constructor(mensagem: string){
+    super(mensagem);
   }
 }
